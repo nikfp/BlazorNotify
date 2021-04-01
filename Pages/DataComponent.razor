@@ -1,0 +1,35 @@
+﻿@page "/datacomponent"
+
+@inject ViewModel VModel
+@using System.ComponentModel;
+
+@implements IDisposable
+
+<h3>DataComponent</h3>
+<p>@VModel.Counter</p>
+<EditForm Model="VModel">
+<InputText @bind-Value="VModel.MyString" />
+</EditForm>
+
+<button @onclick="(() => VModel.Counter++)">Increment</button>
+
+@code {
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        VModel.PropertyChanged += OnPropertyChangedHandler;
+    }
+
+    async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+    {
+        await InvokeAsync(() => StateHasChanged());
+    }
+
+    public void Dispose()
+    {
+        VModel.PropertyChanged -= OnPropertyChangedHandler;
+    }
+
+}

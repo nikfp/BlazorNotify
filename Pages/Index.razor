@@ -1,0 +1,36 @@
+﻿@page "/"
+
+@inject ViewModel VModel
+@using System.ComponentModel;
+
+@implements IDisposable
+
+<h2>Text value is: @VModel.MyString</h2>
+<br />
+<h3>Counter value is: @VModel.Counter</h3>
+
+<br />
+
+<DataComponent />
+<DataComponent />
+<DataComponent />
+
+@code {
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        VModel.PropertyChanged += OnPropertyChangedHandler;
+    }
+
+    async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+    {
+        await InvokeAsync(() => StateHasChanged());
+    }
+
+    public void Dispose()
+    {
+        VModel.PropertyChanged -= OnPropertyChangedHandler;
+    }
+}
